@@ -1,5 +1,6 @@
 package pe.todotic.taskflow.controlador;
 
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -18,6 +19,7 @@ import pe.todotic.taskflow.repositorio.UsuarioRepository;
 import java.time.LocalDateTime;
 import java.util.List;
 
+@Tag(name = "usuarios", description = "Endpoints para la gestion de usuarios.")
 @RestController
 @RequestMapping("/api/usuarios")
 @AllArgsConstructor
@@ -90,4 +92,8 @@ public class UsuarioController {
         return usuario.getTareas();
     }
 
+    @GetMapping("/email/{email}")
+    Usuario obtenerUsuarioByEmail(@PathVariable String email){
+        return usuarioRepository.findByEmail(email).orElseThrow(EntityNotFoundException::new);
+    }
 }

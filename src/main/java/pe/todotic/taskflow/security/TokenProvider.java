@@ -3,6 +3,8 @@ package pe.todotic.taskflow.security;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
+import jakarta.annotation.PostConstruct;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
@@ -18,14 +20,16 @@ import java.util.stream.Collectors;
 
 @Component
 public class TokenProvider {
-
-    private Long tokenValidityInSeconds = 2_592_000L;
-    private String tokenSecret = "LYTvMBxds49KQzMzf5XJ4bzkExNsmuqXj3nfM2j3UBhGuVaDuKgWfEykNAKWADNFt4Uz9eJ4Eguy3EfNdygEPDfL5q3TjfUMVVszkDJQerp7tk9GMcUzfyrMKA8BGq4f97A7ZgpPEMgbLdH9Guz5zyVCtNJUqyQN7n25NaQVdFeTguhjVAH5nAEzqZwSCVKbZs9A96aCWLSgY3wszU9dhUZwbqQbdZRvjb4cfG2EC76wfUCAevDajZU6SRHAJdwN";
+    @Value("${app.security.jwt.token-validity-in-seconds}")
+    private Long tokenValidityInSeconds;
+    @Value("${app.security.jwt.secret}")
+    private String tokenSecret;
 
     private byte[] secretBytes;
     private SecretKey key;
 
-    public TokenProvider() {
+    @PostConstruct
+    public void init() {
         secretBytes = Decoders.BASE64.decode(tokenSecret);
         key = Keys.hmacShaKeyFor(secretBytes);
     }

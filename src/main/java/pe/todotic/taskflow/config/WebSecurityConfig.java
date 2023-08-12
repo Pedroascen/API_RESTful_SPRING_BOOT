@@ -3,7 +3,10 @@ package pe.todotic.taskflow.config;
 import lombok.AllArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.config.Customizer;
+import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
@@ -16,17 +19,25 @@ import pe.todotic.taskflow.security.JwtFilter;
 
 @Configuration
 @AllArgsConstructor
+@EnableMethodSecurity(securedEnabled = true, prePostEnabled = true, jsr250Enabled = true)
 public class WebSecurityConfig {
 
     private final JwtFilter jwtFilter;
-
     @Bean
     SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         return http
+                .cors(Customizer.withDefaults())
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(
                         a -> a
-                                .requestMatchers("/api/auth/**")
+                                //.requestMatchers(HttpMethod.GET,"/api/tareas/**")
+                                //.hasAnyRole("ADMIN","NORMAL")
+                                //.requestMatchers("/api/tareas/**")
+                                //.hasAnyRole("ADMIN")
+
+                                .requestMatchers("/api/usuarios/**")
+                                .hasRole("ADMIN")
+                                .requestMatchers("/api/auth/**","/documentacion/**","/api-docs/**","/swagger-ui/**")
                                 .permitAll()
                                 .anyRequest()
 //                                .permitAll()

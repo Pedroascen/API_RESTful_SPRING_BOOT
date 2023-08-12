@@ -1,5 +1,6 @@
 package pe.todotic.taskflow.controlador;
 
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpHeaders;
@@ -16,6 +17,7 @@ import pe.todotic.taskflow.controlador.dto.AccessTokenDTO;
 import pe.todotic.taskflow.controlador.dto.LoginDTO;
 import pe.todotic.taskflow.security.TokenProvider;
 
+@Tag(name = "auth", description = "Endpoint para la gestion de un token.")
 @RestController
 @RequestMapping("/api/auth")
 @AllArgsConstructor

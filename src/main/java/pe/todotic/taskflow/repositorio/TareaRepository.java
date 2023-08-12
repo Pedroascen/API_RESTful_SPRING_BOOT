@@ -12,4 +12,6 @@ public interface TareaRepository extends JpaRepository<Tarea, Integer> {
 
     Optional<Tarea> findByIdAndResponsableEmail(Integer id, String emailResponsable);
 
+    List<Tarea> findByEstado(Enum estado);
+
 }
